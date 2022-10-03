@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import javax.
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonAdd, buttonSub, buttonDiv, buttonClr, buttonEql, buttonMulti, buttonDec;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 addNumber("6");
                 break;
             case R.id.button7:
-                addNumber("7");
+                addNumber("hi");
                 break;
             case R.id.button8:
                 addNumber("8");
@@ -96,10 +97,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 addNumber("-");
                 break;
             case R.id.buttonMulti:
-                addNumber("*");
+                addNumber("\u00D7");
                 break;
             case R.id.buttonDiv:
-                addNumber("/");
+                addNumber("\u00F7");
                 break;
             case R.id.buttonDec:
                 addNumber(".");
