@@ -7,11 +7,54 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Stack;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonAdd, buttonSub, buttonDiv, buttonClr, buttonEql, buttonMulti, buttonDec;
     TextView text_input_display;
+    String[] toEval = new String[25];
 
+    private static String[] convertToPostfix(String[] in) {
+        Stack<String> operators = new Stack<>();
+        String[] pstFix = new String[25];
+        int count =0;
+        for (int i =0; i< in.length; i++) {
+            if (in[i]==null) {
+                break;
+            }
+            if (!(in[i].equals("*")) && !(in[i].equals("/")) && !(in[i].equals("+")) && !(in[i].equals("-"))) {
+                pstFix[count++] = in[i];
+            }
+            else {
+                if (operators.isEmpty()) {
+                    operators.push(in[i]);
+                }
+                else if ((in[i].equals("+")|| in[i].equals("-")) && (operators.peek().equals("*") || operators.peek().equals("*"))) {
+                    while (operators.isEmpty()==false) {
+                        pstFix[count++] = operators.pop();
+                    }
+                    operators.push(in[i]);
+                }
+                else {
+                    while (((in[i].equals("+")||in[i].equals("-")) && (operators.peek().equals("+")|| operators.peek().equals("-")))
+                            || ((in[i].equals("*") || in[i].equals("/"))&& (operators.peek().equals("*")||
+                            operators.peek().equals("/")))) {
+                        pstFix[count++] = operators.pop();
+                    }
+                    operators.push(in[i]);
+                }
+            }
+        }
+        while (operators.isEmpty()==false) {
+            pstFix[count++] = operators.pop();
+        }
+        return pstFix;
+    }
+    private static double evaluate(String[] expression) {
+        String[] pstFix = convertToPostfix(expression);
+        return 0;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,45 +105,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.button1:
                 addNumber("1");
+                //toCalculate.append("1");
                 break;
             case R.id.button2:
                 addNumber("2");
+                //toCalculate.append("2");
                 break;
             case R.id.button3:
                 addNumber("3");
+                //toCalculate.append("3");
                 break;
             case R.id.button4:
                 addNumber("4");
+                //toCalculate.append("4");
                 break;
             case R.id.button5:
                 addNumber("5");
+                //toCalculate.append("5");
                 break;
             case R.id.button6:
                 addNumber("6");
+                //toCalculate.append("6");
                 break;
             case R.id.button7:
                 addNumber("hi");
+                //toCalculate.append("7");
                 break;
             case R.id.button8:
                 addNumber("8");
+                //toCalculate.append("8");
                 break;
             case R.id.button9:
                 addNumber("9");
+                //toCalculate.append("9");
                 break;
             case R.id.button0:
                 addNumber("0");
+                //toCalculate.append("0");
                 break;
             case R.id.buttonAdd:
                 addNumber("+");
+                //toCalculate.append("+");
                 break;
             case R.id.buttonSub:
                 addNumber("-");
+                //toCalculate.append("-");
                 break;
             case R.id.buttonMulti:
                 addNumber("\u00D7");
+                //toCalculate.append("*");
                 break;
             case R.id.buttonDiv:
                 addNumber("\u00F7");
+                //toCalculate.append("/");
                 break;
             case R.id.buttonDec:
                 addNumber(".");
