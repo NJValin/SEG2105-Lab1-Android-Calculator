@@ -7,59 +7,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonAdd, buttonSub, buttonDiv, buttonClr, buttonEql, buttonMulti, buttonDec;
     TextView text_input_display;
-    String[] toEval = new String[25];
+    ScriptEngine script;
 
-    private static String[] convertToPostfix(String[] in) {
-        Stack<String> operators = new Stack<>();
-        String[] pstFix = new String[25];
-        int count =0;
-        for (int i =0; i< in.length; i++) {
-            if (in[i]==null) {
-                break;
-            }
-            if (!(in[i].equals("*")) && !(in[i].equals("/")) && !(in[i].equals("+")) && !(in[i].equals("-"))) {
-                pstFix[count++] = in[i];
-            }
-            else {
-                if (operators.isEmpty()) {
-                    operators.push(in[i]);
-                }
-                else if ((in[i].equals("+")|| in[i].equals("-")) && (operators.peek().equals("*") || operators.peek().equals("*"))) {
-                    while (operators.isEmpty()==false) {
-                        pstFix[count++] = operators.pop();
-                    }
-                    operators.push(in[i]);
-                }
-                else {
-                    while (((in[i].equals("+")||in[i].equals("-")) && (operators.peek().equals("+")|| operators.peek().equals("-")))
-                            || ((in[i].equals("*") || in[i].equals("/"))&& (operators.peek().equals("*")||
-                            operators.peek().equals("/")))) {
-                        pstFix[count++] = operators.pop();
-                    }
-                    operators.push(in[i]);
-                }
-            }
-        }
-        while (operators.isEmpty()==false) {
-            pstFix[count++] = operators.pop();
-        }
-        return pstFix;
-    }
-    private static double evaluate(String[] expression) {
-        String[] pstFix = convertToPostfix(expression);
-        return 0;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        script = new ScriptEngineManager().getEngineByName("rhino");
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
@@ -128,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //toCalculate.append("6");
                 break;
             case R.id.button7:
-                addNumber("hi");
+                addNumber("7");
                 //toCalculate.append("7");
                 break;
             case R.id.button8:
@@ -141,22 +109,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button0:
                 addNumber("0");
-                //toCalculate.append("0");
                 break;
             case R.id.buttonAdd:
                 addNumber("+");
-                //toCalculate.append("+");
+
                 break;
             case R.id.buttonSub:
                 addNumber("-");
-                //toCalculate.append("-");
+
                 break;
             case R.id.buttonMulti:
-                addNumber("\u00D7");
-                //toCalculate.append("*");
+                addNumber("*");
                 break;
             case R.id.buttonDiv:
-                addNumber("\u00F7");
+                addNumber("/");
                 //toCalculate.append("/");
                 break;
             case R.id.buttonDec:
@@ -166,11 +132,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Clear();
                 break;
             case R.id.buttonEql:
-                addNumber("=");
+                String x = (String)text_input_display.getText();
+                Clear();
+                try {
+                    addNumber(evaluate(x));
+                }
+                catch (ScriptException e) {
+                    addNumber("Input Error");
+                }
                 break;
         }
     }
-
+    private String evaluate(String toEval) throws ScriptException {
+        return script.eval(toEval).toString();
+    }
 
     private void addNumber(String number){
         text_input_display.setText(text_input_display.getText()+number);
