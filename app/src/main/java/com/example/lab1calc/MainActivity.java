@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonAdd, buttonSub, buttonDiv, buttonClr, buttonEql, buttonMulti, buttonDec;
     TextView text_input_display;
     ScriptEngine script;
+    boolean isDouble = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,15 +128,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.buttonDec:
                 addNumber(".");
+                isDouble = true;
                 break;
             case R.id.buttonClr:
                 Clear();
                 break;
             case R.id.buttonEql:
                 String x = (String)text_input_display.getText();
+
                 Clear();
                 try {
-                    addNumber(evaluate(x));
+                    if (isDouble) {
+                        addNumber(evaluate(x));
+                        break;
+                    }
+                    else {
+                        String temp = evaluate(x);
+                        temp = temp.substring(0, temp.length()-2);
+                        addNumber(temp);
+                    }
                 }
                 catch (ScriptException e) {
                     addNumber("Input Error");
