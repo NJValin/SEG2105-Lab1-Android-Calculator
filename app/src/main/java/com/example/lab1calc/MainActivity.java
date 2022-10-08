@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.buttonDiv:
                 addNumber("/");
-                //toCalculate.append("/");
+                isDouble = true;
                 break;
             case R.id.buttonDec:
                 addNumber(".");
@@ -136,16 +136,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonEql:
                 String x = (String)text_input_display.getText();
 
-                Clear();
+
                 try {
                     if (isDouble) {
+                        Clear();
                         addNumber(evaluate(x));
                         break;
                     }
                     else {
+                        Clear();
                         String temp = evaluate(x);
-                        temp = temp.substring(0, temp.length()-2);
-                        addNumber(temp);
+                        addNumber(temp.substring(0, temp.length()-2));
                     }
                 }
                 catch (ScriptException e) {
@@ -164,5 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void Clear(){
         text_input_display.setText("");
+        isDouble = false;
     }
 }
