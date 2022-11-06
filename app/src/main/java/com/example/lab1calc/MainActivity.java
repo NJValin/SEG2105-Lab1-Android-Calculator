@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,15 +21,16 @@ import javax.script.ScriptException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonAdd, buttonSub, buttonDiv, buttonClr, buttonEql, buttonMulti, buttonDec;
     TextView text_input_display;
-    ScriptEngine script;
+    //ScriptEngine script;
     boolean isDouble = false;
+    Evaluate e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        script = new ScriptEngineManager().getEngineByName("rhino");
+        e = new Evaluate();
+        //script = new ScriptEngineManager().getEngineByName("rhino");
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
@@ -156,7 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     private String evaluate(String toEval) throws ScriptException {
-        return script.eval(toEval).toString();
+        BigDecimal decimal = e.evaluate(toEval);
+        return decimal.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+
     }
 
     private void addNumber(String number){
