@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else {
                         Clear();
                         String temp = evaluate(x);
-                        addNumber(temp.substring(0, temp.length()-2));
+                        addNumber(temp.substring(0, temp.length()-3));
                     }
                 }
                 catch (ScriptException e) {
